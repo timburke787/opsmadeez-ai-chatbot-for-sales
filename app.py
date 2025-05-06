@@ -288,6 +288,8 @@ Now, based on the question below and the data above, provide an analysis or answ
                 "answer": response_text,
                 "timestamp": timestamp
             })
+            st.session_state.user_question_input = ""  # Clear the input field
+            st.rerun() 
 
             st.markdown("### 🧠 AI Response")
             st.write(response_text)
