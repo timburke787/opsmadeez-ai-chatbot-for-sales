@@ -194,7 +194,24 @@ deals_df["opportunity_id"] = deals_df["opportunity_id"].astype(str).str.strip()
 buying_group_df = roles_df.merge(contacts_df, on="contact_id", how="left")
 buying_group_df = buying_group_df.merge(deals_df, on="opportunity_id", how="left")
 valid_opps = buying_group_df["opportunity_name"].dropna().unique().tolist()
+# Show intro + available deals only after data is loaded
+st.markdown(f"""
+Welcome to the **OpsMadeEZ CRM Buying Group Assistant**, built by Tim Burke.
 
+This AI-powered chatbot helps sellers, marketers, and RevOps teams explore CRM data and make better decisions about active opportunities and their buying groups.
+
+Try asking high-value questions like:
+- “Who is in the buying group for Rogers-Wilson?”
+- “What roles are missing from the buying group for the Rivera-Ho deal?”
+- “Which contact is the most engaged on the Dickerson-Medina deal?”
+
+---
+
+### 📋 Opportunities with Buying Group Members
+
+Use these opportunity names in your questions:
+{', '.join(sorted(valid_opps))}
+""")
 # --------------------
 # Rename sales activity fields
 sales_activity_df = data["sales_activities"].rename(columns={
