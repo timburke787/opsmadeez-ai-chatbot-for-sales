@@ -5,8 +5,8 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import re
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from .env file
+load_dotenv(dotenv_path=".env")
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Set up the page
@@ -119,6 +119,14 @@ def extract_opportunity_name(question):
     return None
 
 opp_name = extract_opportunity_name(user_question or "")
+
+# DEBUG: Show matched opportunity name
+st.write("🔍 Matched Opportunity Name:", opp_name)
+
+# Show available opportunities if no match found
+if not opp_name:
+    st.write("📋 Available Opportunity Names:")
+    st.write(deals_df["opportunity_name"].tolist())
 
 # ---------------------
 # Filter records for selected opportunity
