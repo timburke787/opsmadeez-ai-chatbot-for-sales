@@ -16,32 +16,6 @@ st.set_page_config(page_title="CRM AI Assistant", layout="wide")
 st.title("🤖 OpsMadeEZ | AI Buying Group Assistant")
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
-st.markdown("""
-Welcome to the **OpsMadeEZ CRM Buying Group Assistant**, built by Tim Burke.
-
-This AI-powered chatbot helps sellers, marketers, and RevOps teams explore CRM data and make better decisions about active opportunities and their buying groups.
-
-Try asking high-value questions like:
-- “Who is in the buying group for Turing Media?”
-- “What roles are missing from the buying group for Acme Corp?”
-- “Which contact is the most engaged on the Apex opportunity?”
-- “Have we reached out to procurement yet for Velocity Health?”
-- “What’s the last activity logged for the champion in the Beacon deal?”
-
-The more structured your CRM data is, the more accurate the assistant will be. Let’s go!
-
----
-
-### 📋 Opportunities with Buying Group Members
-Use the opportunity names below when asking the assistant about buying groups:
-
-""")
-
-if valid_opps:
-    for opp in sorted(valid_opps):
-        st.markdown(f"- {opp}")
-else:
-    st.write("No opportunities with buying group members were found.")
 # Load CRM data from CSV files
 @st.cache_data
 def load_data():
@@ -161,7 +135,32 @@ deals_df["opportunity_id"] = deals_df["opportunity_id"].astype(str).str.strip()
 buying_group_df = roles_df.merge(contacts_df, on="contact_id", how="left")
 buying_group_df = buying_group_df.merge(deals_df, on="opportunity_id", how="left")
 valid_opps = buying_group_df["opportunity_name"].dropna().unique().tolist()
+st.markdown("""
+Welcome to the **OpsMadeEZ CRM Buying Group Assistant**, built by Tim Burke.
 
+This AI-powered chatbot helps sellers, marketers, and RevOps teams explore CRM data and make better decisions about active opportunities and their buying groups.
+
+Try asking high-value questions like:
+- “Who is in the buying group for Turing Media?”
+- “What roles are missing from the buying group for Acme Corp?”
+- “Which contact is the most engaged on the Apex opportunity?”
+- “Have we reached out to procurement yet for Velocity Health?”
+- “What’s the last activity logged for the champion in the Beacon deal?”
+
+The more structured your CRM data is, the more accurate the assistant will be. Let’s go!
+
+---
+
+### 📋 Opportunities with Buying Group Members
+Use the opportunity names below when asking the assistant about buying groups:
+
+""")
+
+if valid_opps:
+    for opp in sorted(valid_opps):
+        st.markdown(f"- {opp}")
+else:
+    st.write("No opportunities with buying group members were found.")
 # --------------------
 # Rename sales activity fields
 sales_activity_df = data["sales_activities"].rename(columns={
