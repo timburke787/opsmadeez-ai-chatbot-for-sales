@@ -1,0 +1,9 @@
+[theme]
+base = "light"
+
+primaryColor = "#5C33F6"                # Electric Indigo (CTA, headings, icons)
+backgroundColor = "#E5E9F0"             # Sky Mist (Backgrounds)
+secondaryBackgroundColor = "#FFFFFF"    # Clean contrast for panels
+textColor = "#3B3F5C"                   # Slate Gray (Body text)
+
+font = "sans serif"                     # Arial/Verdana-style fallback
