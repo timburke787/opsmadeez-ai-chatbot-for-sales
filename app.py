@@ -291,13 +291,8 @@ try:
                 "answer": response_text,
                 "timestamp": timestamp
             })
-            st.session_state.user_question_input = ""  # Clear the input field
-            st.rerun() 
 
-            st.markdown("### 🧠 AI Response")
-            st.write(response_text)
-
-        except Exception as e:
+            st.session_state.user_question_input = ""  # Clear input after submission
+            st.rerun()
+except Exception as e:
             st.error(f"Something went wrong: {e}")
-# Force Streamlit to re-run and show the new message at the top
-st.rerun()
