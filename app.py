@@ -150,6 +150,13 @@ deals_df["opportunity_id"] = deals_df["opportunity_id"].astype(str).str.strip()
 buying_group_df = roles_df.merge(contacts_df, on="contact_id", how="left")
 buying_group_df = buying_group_df.merge(deals_df, on="opportunity_id", how="left")
 
+# Get a list of opportunity names that have at least one buying group member
+opps_with_buying_group = buying_group_df["opportunity_name"].unique().tolist()
+
+# Display only those opportunities with associated buying group members
+st.markdown("### 📋 Opportunities with Buying Group Members")
+st.write(opps_with_buying_group)
+
 # Rename sales activity fields
 sales_activity_df = data["sales_activities"].rename(columns={
     "Contact ID": "contact_id",
@@ -182,12 +189,6 @@ def extract_opportunity_name(question):
 
 # Extract opportunity name
 opp_name = extract_opportunity_name(user_question or "")
-
-# Debug: Show what was matched
-st.write("🔍 Matched Opportunity Name:", opp_name)
-if not opp_name:
-    st.write("📋 Available Opportunity Names:")
-    st.write(deals_df["opportunity_name"].tolist())
 
 # ---------------------
 # Filter records for selected opportunity
