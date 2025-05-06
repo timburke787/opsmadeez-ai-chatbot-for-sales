@@ -10,8 +10,24 @@ load_dotenv(dotenv_path=".env")
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Set up the page
+
 st.set_page_config(page_title="CRM AI Assistant", layout="wide")
-st.title("🤖 CRM Buying Group Assistant")
+
+st.title("🤖 OpsMadeEZ | AI Buying Group Assistant")
+st.markdown("""
+Welcome to the **OpsMadeEZ CRM Buying Group Assistant**, built by Tim Burke.
+
+This AI-powered chatbot helps sellers, marketers, and RevOps teams explore CRM data and make better decisions about active opportunities and their buying groups.
+
+Try asking high-value questions like:
+- “Who is in the buying group for Turing Media?”
+- “What roles are missing from the buying group for Acme Corp?”
+- “Which contact is the most engaged on the Apex opportunity?”
+- “Have we reached out to procurement yet for Velocity Health?”
+- “What’s the last activity logged for the champion in the Beacon deal?”
+
+The more structured your CRM data is, the more accurate the assistant will be. Let’s go!
+""")
 
 # Load CRM data from CSV files
 @st.cache_data
