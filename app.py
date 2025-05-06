@@ -294,3 +294,5 @@ Now, based on the question below and the data above, provide an analysis or answ
 
         except Exception as e:
             st.error(f"Something went wrong: {e}")
+# Force Streamlit to re-run and show the new message at the top
+st.experimental_rerun()
