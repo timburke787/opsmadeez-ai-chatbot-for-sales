@@ -73,23 +73,26 @@ with st.form("user_input_form"):
 
 # Only run the assistant if the form was submitted and question exists
 if submitted and user_question:
-    # Extract opportunity name
+    # ---------------------
+# Extract opportunity name
     opp_name = extract_opportunity_name(user_question or "")
 
-    # Filter records
-    if opp_name:
-        selected_group = buying_group_df[buying_group_df["opportunity_name"].str.lower() == opp_name.lower()]
-        contact_ids = selected_group["contact_id"].unique()
-        activity_subset = sales_activity_df[sales_activity_df["contact_id"].isin(contact_ids)]
-        group_records = selected_group.to_dict(orient="records")
-        activity_records = activity_subset.to_dict(orient="records")
-    else:
-        group_records = []
-        activity_records = []
+# ---------------------
+# Filter records for selected opportunity
+# ---------------------
+if opp_name:
+    selected_group = buying_group_df[buying_group_df["opportunity_name"].str.lower() == opp_name.lower()]
+    contact_ids = selected_group["contact_id"].unique()
+    activity_subset = sales_activity_df[sales_activity_df["contact_id"].isin(contact_ids)]
+    group_records = selected_group.to_dict(orient="records")
+    activity_records = activity_subset.to_dict(orient="records")
+else:
+    group_records = []
+    activity_records = []
+
+# ---------------------
 # Prompt GPT
 # ---------------------
-if st.session_state.get("user_question_input"):
-    user_question = st.session_state["user_question_input"]
 prompt = f"""
 You are an AI assistant helping a RevOps team analyze CRM data.
 
@@ -261,29 +264,29 @@ else:
 
 # ---------------------
 try:
-            response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "system", "content": "You are a helpful CRM and RevOps assistant."},
-                    {"role": "user", "content": prompt}
-                ]
-            )
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "You are a helpful CRM and RevOps assistant."},
+            {"role": "user", "content": prompt}
+        ]
+    )
 
-            response_text = response.choices[0].message.content
+    response_text = response.choices[0].message.content
 
-            from datetime import datetime
-            timestamp = datetime.now().strftime("%b %d, %Y %I:%M %p")
+    from datetime import datetime
+    timestamp = datetime.now().strftime("%b %d, %Y %I:%M %p")
 
-            if "chat_history" not in st.session_state:
-                st.session_state.chat_history = []
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
 
-            st.session_state.chat_history.append({
-                "question": user_question,
-                "answer": response_text,
-                "timestamp": timestamp
-            })
-            st.session_state.submitted = True
-            st.rerun()
+    st.session_state.chat_history.append({
+        "question": user_question,
+        "answer": response_text,
+        "timestamp": timestamp
+    })
+    st.session_state.submitted = True
+    st.rerun()
 
 except Exception as e:
-            st.error(f"Something went wrong: {e}")      
+    st.error(f"Something went wrong: {e}")    
