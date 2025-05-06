@@ -78,23 +78,54 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-st.markdown("### Chat History")
+# Inject CSS styles
+st.markdown("""
+    <style>
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .chat-bubble-user, .chat-bubble-ai {
+        max-width: 75%;
+        padding: 0.75em 1em;
+        border-radius: 15px;
+        margin-bottom: 1em;
+        line-height: 1.5;
+    }
+    .chat-bubble-user {
+        align-self: flex-end;
+        background-color: #5C33F6;
+        color: white;
+    }
+    .chat-bubble-ai {
+        align-self: flex-start;
+        background-color: #E5E9F0;
+        color: #3B3F5C;
+    }
+    .timestamp {
+        font-size: 0.75em;
+        margin-top: 4px;
+        display: block;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
+# Render chat history
+st.markdown("### Chat History")
 chat_history_reversed = list(reversed(st.session_state.chat_history))
 
 for message in chat_history_reversed:
-    st.markdown(f"""
+    st.markdown(f""" 
     <div class="chat-container">
         <div class="chat-bubble-user">
             <strong>You:</strong> {message['question']}
-            <div style="font-size: 0.75em; color: #D1D5DB; margin-top: 4px;">{message['timestamp']}</div>
+            <span class="timestamp">{message['timestamp']}</span>
         </div>
         <div class="chat-bubble-ai">
             <strong>AI:</strong> {message['answer']}
-            <div style="font-size: 0.75em; color: #9CA3AF; margin-top: 4px;">{message['timestamp']}</div>
+            <span class="timestamp">{message['timestamp']}</span>
         </div>
     </div>
-    <hr style="border: none; border-top: 1px solid #E5E9F0; margin: 1em 0;">
     """, unsafe_allow_html=True)
 
 # ---------------------
