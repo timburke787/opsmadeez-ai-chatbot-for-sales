@@ -89,7 +89,10 @@ st.markdown("""
 
 st.markdown("### Chat History")
 
-for message in reversed(st.session_state.chat_history):
+# Reverse the chat history to show most recent first
+chat_history_reversed = list(reversed(st.session_state.chat_history))
+
+for message in chat_history_reversed:
     st.markdown(f"""
     <div class="chat-container">
         <div class="chat-bubble-user">
