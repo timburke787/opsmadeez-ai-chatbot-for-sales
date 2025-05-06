@@ -54,7 +54,7 @@ user_question = st.text_input("Ask about a buying group (e.g., 'Who's in the buy
 
 st.markdown("### Chat History")
 
-for message in st.session_state.chat_history:
+for message in reversed(st.session_state.chat_history):
     with st.container():
         st.markdown(f"**You:** {message['question']}")
         st.markdown(f"**AI:** {message['answer']}")
