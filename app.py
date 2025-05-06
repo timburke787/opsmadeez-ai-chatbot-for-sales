@@ -14,6 +14,8 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 st.set_page_config(page_title="CRM AI Assistant", layout="wide")
 
 st.title("🤖 OpsMadeEZ | AI Buying Group Assistant")
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 st.markdown("""
 Welcome to the **OpsMadeEZ CRM Buying Group Assistant**, built by Tim Burke.
 
@@ -48,7 +50,14 @@ def load_data():
 data = load_data()
 
 # Ask the assistant a question
-user_question = st.text_input("Ask a question about your CRM data:")
+user_question = st.text_input("Ask about a buying group (e.g., 'Who's in the buying group for Acme Corp?'):")
+
+st.markdown("### Chat History")
+
+for message in st.session_state.chat_history:
+    with st.container():
+        st.markdown(f"**You:** {message['question']}")
+        st.markdown(f"**AI:** {message['answer']}")
 
 # ---------------------
 # Rename contact fields
@@ -192,17 +201,30 @@ Now, based on the question below and the data above, provide an analysis or answ
 
 {user_question}
 """
-        try:
-            response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "system", "content": "You are a helpful CRM and RevOps assistant."},
-                    {"role": "user", "content": prompt}
-                ]
-            )
+try:
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "You are a helpful CRM and RevOps assistant."},
+            {"role": "user", "content": prompt}
+        ]
+    )
 
-            st.markdown("### 🧠 AI Response")
-            st.write(response.choices[0].message.content)
+    response_text = response.choices[0].message.content
 
-        except Exception as e:
-            st.error(f"Something went wrong: {e}")
+    # Store Q&A in session state
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+
+    st.session_state.chat_history.append({
+        "question": user_question,
+        "answer": response_text
+    })
+
+    # Show response
+    st.markdown("### 🧠 AI Response")
+    st.write(response_text)
+
+except Exception as e:
+    st.error(f"Something went wrong: {e}")
+
