@@ -36,7 +36,6 @@ The more structured your CRM data is, the more accurate the assistant will be. L
 Use the opportunity names below when asking the assistant about buying groups:
 
 """)
-valid_opps = buying_group_df["opportunity_name"].dropna().unique().tolist()
 
 if valid_opps:
     for opp in sorted(valid_opps):
@@ -161,6 +160,7 @@ deals_df["opportunity_id"] = deals_df["opportunity_id"].astype(str).str.strip()
 # Merge to create full buying group view
 buying_group_df = roles_df.merge(contacts_df, on="contact_id", how="left")
 buying_group_df = buying_group_df.merge(deals_df, on="opportunity_id", how="left")
+valid_opps = buying_group_df["opportunity_name"].dropna().unique().tolist()
 
 # --------------------
 # Rename sales activity fields
