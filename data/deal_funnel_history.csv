@@ -1,0 +1,86 @@
+Opportunity ID,Account ID,Previous Stage,New Stage,Stage Entered Date,Stage Exit Date
+bd877186,b8565d3e,Discovery,Evaluation,2025-04-13,2025-05-03
+bd877186,b8565d3e,Evaluation,Demo Complete,2025-05-03,2025-05-03
+bd877186,b8565d3e,Demo Complete,Proposal Sent,2025-05-04,2025-05-04
+fe837f1b,94083352,Discovery,Evaluation,2025-03-28,2025-04-12
+fe837f1b,94083352,Evaluation,Demo Complete,2025-04-12,2025-04-23
+fe837f1b,94083352,Demo Complete,Proposal Sent,2025-05-02,2025-05-04
+fe837f1b,94083352,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+1cfd97d1,3c082fc9,Discovery,Evaluation,2025-04-24,2025-04-25
+1cfd97d1,3c082fc9,Evaluation,Demo Complete,2025-04-30,2025-05-04
+1cfd97d1,3c082fc9,Demo Complete,Proposal Sent,2025-05-05,2025-05-05
+1cfd97d1,3c082fc9,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+17bc58e4,42faa7f6,Discovery,Evaluation,2025-03-18,2025-04-04
+17bc58e4,42faa7f6,Evaluation,Demo Complete,2025-04-14,2025-04-19
+17bc58e4,42faa7f6,Demo Complete,Proposal Sent,2025-04-28,2025-04-28
+17bc58e4,42faa7f6,Proposal Sent,Contract Sent,2025-05-03,2025-05-03
+43e395ba,3e44e348,Discovery,Evaluation,2025-05-04,2025-05-04
+43e395ba,3e44e348,Evaluation,Demo Complete,2025-05-05,2025-05-05
+43e395ba,3e44e348,Demo Complete,Proposal Sent,2025-05-05,2025-05-05
+43e395ba,3e44e348,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+196dc8f7,16b4de65,Discovery,Evaluation,2025-04-02,2025-04-05
+196dc8f7,16b4de65,Evaluation,Demo Complete,2025-04-12,2025-04-15
+196dc8f7,16b4de65,Demo Complete,Proposal Sent,2025-04-21,2025-04-26
+196dc8f7,16b4de65,Proposal Sent,Contract Sent,2025-04-26,2025-04-30
+196dc8f7,16b4de65,Contract Sent,Closed Won,2025-05-03,2025-05-05
+35eaec3b,18b01aaa,Discovery,Evaluation,2025-05-05,2025-05-05
+35eaec3b,18b01aaa,Evaluation,Demo Complete,2025-05-05,2025-05-05
+35eaec3b,18b01aaa,Demo Complete,Proposal Sent,2025-05-05,2025-05-05
+35eaec3b,18b01aaa,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+06ed112e,8138f34c,Discovery,Evaluation,2025-04-23,2025-04-29
+06ed112e,8138f34c,Evaluation,Demo Complete,2025-05-01,2025-05-03
+06ed112e,8138f34c,Demo Complete,Proposal Sent,2025-05-04,2025-05-05
+6d91c462,6bb8d69f,Discovery,Evaluation,2025-04-26,2025-04-27
+6d91c462,6bb8d69f,Evaluation,Demo Complete,2025-04-28,2025-05-01
+6d91c462,6bb8d69f,Demo Complete,Proposal Sent,2025-05-05,2025-05-05
+6d91c462,6bb8d69f,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+7522136,72d0f2c2,Discovery,Evaluation,2025-04-21,2025-05-04
+7522136,72d0f2c2,Evaluation,Demo Complete,2025-05-04,2025-05-04
+7522136,72d0f2c2,Demo Complete,Proposal Sent,2025-05-05,2025-05-05
+7522136,72d0f2c2,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+7522136,72d0f2c2,Contract Sent,Closed Won,2025-05-05,2025-05-05
+7522136,72d0f2c2,Closed Won,Closed Lost,2025-05-05,2025-05-05
+3bd216c2,6508434b,Discovery,Evaluation,2025-04-12,2025-04-27
+3bd216c2,6508434b,Evaluation,Demo Complete,2025-05-05,2025-05-05
+3bd216c2,6508434b,Demo Complete,Proposal Sent,2025-05-05,2025-05-05
+3bd216c2,6508434b,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+af344b5d,56730188,Discovery,Evaluation,2025-03-04,2025-03-13
+af344b5d,56730188,Evaluation,Demo Complete,2025-04-14,2025-04-21
+af344b5d,56730188,Demo Complete,Proposal Sent,2025-04-27,2025-05-03
+af344b5d,56730188,Proposal Sent,Contract Sent,2025-05-03,2025-05-04
+b360b4b8,a6c2a858,Discovery,Evaluation,2025-03-09,2025-04-30
+b360b4b8,a6c2a858,Evaluation,Demo Complete,2025-05-03,2025-05-05
+b360b4b8,a6c2a858,Demo Complete,Proposal Sent,2025-05-05,2025-05-05
+b360b4b8,a6c2a858,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+b360b4b8,a6c2a858,Contract Sent,Closed Won,2025-05-05,2025-05-05
+b360b4b8,a6c2a858,Closed Won,Closed Lost,2025-05-05,2025-05-05
+9cd3f76a,3492a303,Discovery,Evaluation,2025-03-14,2025-04-18
+9cd3f76a,3492a303,Evaluation,Demo Complete,2025-04-25,2025-04-26
+9cd3f76a,3492a303,Demo Complete,Proposal Sent,2025-04-27,2025-05-05
+9cd3f76a,3492a303,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+de7e08b4,1b3da5bc,Discovery,Evaluation,2025-03-19,2025-04-08
+de7e08b4,1b3da5bc,Evaluation,Demo Complete,2025-04-26,2025-04-26
+de7e08b4,1b3da5bc,Demo Complete,Proposal Sent,2025-05-03,2025-05-03
+de7e08b4,1b3da5bc,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+de7e08b4,1b3da5bc,Contract Sent,Closed Won,2025-05-05,2025-05-05
+3e454479,ca87f233,Discovery,Evaluation,2025-03-20,2025-03-26
+3e454479,ca87f233,Evaluation,Demo Complete,2025-03-27,2025-04-20
+3e454479,ca87f233,Demo Complete,Proposal Sent,2025-04-21,2025-05-01
+3e454479,ca87f233,Proposal Sent,Contract Sent,2025-05-02,2025-05-04
+730c3878,99f8e617,Discovery,Evaluation,2025-02-20,2025-03-07
+730c3878,99f8e617,Evaluation,Demo Complete,2025-03-16,2025-04-25
+730c3878,99f8e617,Demo Complete,Proposal Sent,2025-05-05,2025-05-05
+730c3878,99f8e617,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+730c3878,99f8e617,Contract Sent,Closed Won,2025-05-05,2025-05-05
+730c3878,99f8e617,Closed Won,Closed Lost,2025-05-05,2025-05-05
+d3485440,471a7dc9,Discovery,Evaluation,2025-05-04,2025-05-05
+d3485440,471a7dc9,Evaluation,Demo Complete,2025-05-05,2025-05-05
+d3485440,471a7dc9,Demo Complete,Proposal Sent,2025-05-05,2025-05-05
+d3485440,471a7dc9,Proposal Sent,Contract Sent,2025-05-05,2025-05-05
+d3485440,471a7dc9,Contract Sent,Closed Won,2025-05-05,2025-05-05
+3bff89f3,f76de9d0,Discovery,Evaluation,2025-04-20,2025-04-25
+3bff89f3,f76de9d0,Evaluation,Demo Complete,2025-05-03,2025-05-04
+3bff89f3,f76de9d0,Demo Complete,Proposal Sent,2025-05-04,2025-05-05
+4cac8d1f,aaaab2d2,Discovery,Evaluation,2025-04-26,2025-05-03
+4cac8d1f,aaaab2d2,Evaluation,Demo Complete,2025-05-04,2025-05-04
+4cac8d1f,aaaab2d2,Demo Complete,Proposal Sent,2025-05-04,2025-05-04

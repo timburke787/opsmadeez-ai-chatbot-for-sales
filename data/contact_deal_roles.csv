@@ -1,0 +1,89 @@
+Opportunity ID,contact_id,Role,Is Primary
+7f36f015,1cf61d9f,Procurement,FALSE
+7f36f015,9589477a,Technical Buyer,FALSE
+7f36f015,99e8d5dd,Decision Maker,FALSE
+7f36f015,0cbe1a15,Budget Holder,FALSE
+2d9e3df2,7229114e,End User,FALSE
+2d9e3df2,9af94bd8,Technical Buyer,FALSE
+2d9e3df2,e00cae13,End User,FALSE
+2d9e3df2,4549d8b5,Procurement,FALSE
+8b19b6da,9df46fb7,Procurement,FALSE
+8b19b6da,15cc653c,Technical Buyer,FALSE
+8b19b6da,d14bcff6,Procurement,FALSE
+8b19b6da,8b8e99fb,Procurement,FALSE
+8b19b6da,349be0b8,Decision Maker,FALSE
+a7a78132,45f76fdf,Procurement,FALSE
+a7a78132,4b2505f1,Influencer,FALSE
+a7a78132,ee5f25f2,Budget Holder,FALSE
+c4fa91b4,e4db03a9,Budget Holder,FALSE
+c4fa91b4,97ebe5db,Decision Maker,TRUE
+c4fa91b4,22c2a975,Influencer,FALSE
+314a037b,a0c56ea6,Decision Maker,FALSE
+314a037b,92f57488,Budget Holder,FALSE
+314a037b,1e87f117,Procurement,FALSE
+314a037b,61b17f46,Budget Holder,FALSE
+314a037b,ac1ded74,Influencer,FALSE
+314a037b,e819a298,Procurement,FALSE
+82dae3c4,0eb27405,End User,FALSE
+82dae3c4,77a46cba,Influencer,FALSE
+82dae3c4,27e4e7a1,Technical Buyer,FALSE
+82dae3c4,71f335e7,Procurement,FALSE
+82dae3c4,30f8cdb3,Influencer,FALSE
+82dae3c4,c70fdd47,Procurement,FALSE
+bbf2e140,2608717a,End User,FALSE
+bbf2e140,98d250b6,Procurement,FALSE
+bbf2e140,f78b5a51,Procurement,FALSE
+bbf2e140,9f38be1d,Technical Buyer,FALSE
+7d1ded9b,9e4b237e,End User,FALSE
+7d1ded9b,f3cb0a3b,Decision Maker,FALSE
+7d1ded9b,1f40006f,End User,FALSE
+7d1ded9b,4ec93740,Procurement,FALSE
+7d1ded9b,774fa464,Influencer,FALSE
+aacd6b52,180b0286,Procurement,FALSE
+aacd6b52,c7ac15bc,Influencer,FALSE
+aacd6b52,18cff907,Budget Holder,FALSE
+aacd6b52,7fd55d40,Decision Maker,FALSE
+aacd6b52,eb472cf2,Decision Maker,FALSE
+fc1c5c18,fd6f42d6,Influencer,FALSE
+fc1c5c18,54a711a6,Decision Maker,FALSE
+fc1c5c18,9d63e8ae,Procurement,FALSE
+9237e622,e200cafa,End User,FALSE
+9237e622,85d5de5b,Technical Buyer,FALSE
+9237e622,bda48fa2,Technical Buyer,FALSE
+9237e622,5c9f5e6c,Technical Buyer,FALSE
+9237e622,475d8f7b,Technical Buyer,FALSE
+c646fab3,432984a9,Decision Maker,FALSE
+c646fab3,8beada02,Procurement,FALSE
+c646fab3,27390ed1,Influencer,FALSE
+c646fab3,7651ea16,Influencer,FALSE
+c646fab3,fd9b5a1a,Influencer,TRUE
+c646fab3,25febab1,Budget Holder,FALSE
+335c7b56,f0dd5c49,End User,FALSE
+335c7b56,bc884e3e,Influencer,FALSE
+335c7b56,e77d4cb7,End User,FALSE
+abca5498,a7b907e3,Decision Maker,FALSE
+abca5498,104bb1c4,Technical Buyer,FALSE
+abca5498,3bfc5a3f,End User,FALSE
+abca5498,b48ced62,Decision Maker,FALSE
+abca5498,88c000bd,Procurement,FALSE
+f0c59f38,48629242,Budget Holder,FALSE
+f0c59f38,42ad3726,Procurement,FALSE
+f0c59f38,3a175426,Decision Maker,FALSE
+f0c59f38,a9c88a85,Influencer,FALSE
+23b5df35,a10918dc,Technical Buyer,FALSE
+23b5df35,2dc212b4,Technical Buyer,FALSE
+23b5df35,e429ea64,Procurement,FALSE
+23b5df35,0e0efda0,Decision Maker,FALSE
+23b5df35,f8d36853,Influencer,FALSE
+f510923e,46d9f6a7,Budget Holder,FALSE
+f510923e,ab7dd360,Procurement,FALSE
+f510923e,af912743,Procurement,FALSE
+7a04ba44,0df2c205,Decision Maker,FALSE
+7a04ba44,a7283439,End User,FALSE
+7a04ba44,f30367ef,Technical Buyer,FALSE
+7a04ba44,f7e57b38,Budget Holder,FALSE
+7a04ba44,0812f6ac,Procurement,FALSE
+b5219f90,caa0c9c7,Decision Maker,FALSE
+b5219f90,7a8182eb,Technical Buyer,FALSE
+b5219f90,33c68a10,End User,FALSE
+b5219f90,3807619f,Budget Holder,FALSE

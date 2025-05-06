@@ -1,0 +1,7 @@
+Role,Typical Titles,Behavioral Keywords,AI Tag Guidance
+Decision Maker,"CMO, VP of Marketing, Head of Marketing, Chief Marketing Officer","approves budget, final decision, signs contract","Look for authority signals in call notes, emails, and opportunity involvement"
+Influencer,"Director of Marketing, Demand Gen Manager, Marketing Manager","drives strategy, influences platform selection, internal champion",May not sign off but strongly shapes the buying decision; often engages early
+Technical Buyer,"Marketing Operations Manager, RevOps Manager, IT Manager","integration, implementation, evaluates technical fit",Look for concerns around platform capabilities or compatibility
+End User,"Marketing Specialist, Content Manager, Campaign Manager","uses the tool daily, cares about UX, campaign execution",Might engage with product demos or ask usage-specific questions
+Budget Holder,"Finance Manager, CFO, VP of Finance","cost justification, ROI, total cost of ownership","Engagement tends to focus on pricing, risk, and value"
+Procurement,"Procurement Specialist, Vendor Manager","contract terms, legal review, negotiation, vendor onboarding",Often appears at the end of cycle; may not influence selection but delays close
