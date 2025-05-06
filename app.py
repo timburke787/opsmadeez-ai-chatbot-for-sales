@@ -39,26 +39,16 @@ Welcome to the **OpsMadeEZ CRM Buying Group Assistant**, built by Tim Burke.
 This AI-powered chatbot helps sellers, marketers, and RevOps teams explore CRM data and make better decisions about active opportunities and their buying groups.
 
 Try asking high-value questions like:
-- “Who is in the buying group for Turing Media?”
-- “What roles are missing from the buying group for Acme Corp?”
-- “Which contact is the most engaged on the Apex opportunity?”
+- “Who is in the buying group for Rogers-Wilson?”
+- “What roles are missing from the buying group for the Rivera-Ho deal?”
+- “Which contact is the most engaged on the Dickerson-Medina deal?”
 - “Have we reached out to procurement yet for Velocity Health?”
-- “What’s the last activity logged for the champion in the Beacon deal?”
+- “What’s the last activity logged for the champion in the Gonzalez, Sanchez and Walker deal?”
 
-The more structured your CRM data is, the more accurate the assistant will be. Let’s go!
-
----
-
-### 📋 Opportunities with Buying Group Members
-Use the opportunity names below when asking the assistant about buying groups:
-- Rogers-Wilson - Marketing Platform
-- Dickerson-Medina - Marketing Platform
-- Rivera-Ho - Marketing Platform
-- Gonzalez, Sanchez and Walker - Marketing Platform
-            
+The more structured your CRM data is, the more accurate the assistant will be. Let’s go!        
 """)
 # Ask the assistant a question
-user_question = st.text_input("Ask about a buying group (e.g., 'Who's in the buying group for Acme Corp?'):")
+user_question = st.text_input("Ask about a buying group (use the deal names mentioned above):")
 
 st.markdown("""
     <style>
@@ -87,21 +77,24 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+
 st.markdown("### Chat History")
 
-# Reverse chat history so most recent is on top
-for message in reversed(st.session_state.chat_history):
+chat_history_reversed = list(reversed(st.session_state.chat_history))
+
+for message in chat_history_reversed:
     st.markdown(f"""
     <div class="chat-container">
         <div class="chat-bubble-user">
-            <strong>You:</strong> {message['question']}<br>
-            <span style="font-size: 0.75em; color: #D1D5DB;">{message['timestamp']}</span>
+            <strong>You:</strong> {message['question']}
+            <div style="font-size: 0.75em; color: #D1D5DB; margin-top: 4px;">{message['timestamp']}</div>
         </div>
         <div class="chat-bubble-ai">
-            <strong>AI:</strong> {message['answer']}<br>
-            <span style="font-size: 0.75em; color: #9CA3AF;">{message['timestamp']}</span>
+            <strong>AI:</strong> {message['answer']}
+            <div style="font-size: 0.75em; color: #9CA3AF; margin-top: 4px;">{message['timestamp']}</div>
         </div>
     </div>
+    <hr style="border: none; border-top: 1px solid #E5E9F0; margin: 1em 0;">
     """, unsafe_allow_html=True)
 
 # ---------------------
