@@ -29,8 +29,20 @@ Try asking high-value questions like:
 - “What’s the last activity logged for the champion in the Beacon deal?”
 
 The more structured your CRM data is, the more accurate the assistant will be. Let’s go!
-""")
 
+---
+
+### 📋 Opportunities with Buying Group Members
+Use the opportunity names below when asking the assistant about buying groups:
+
+""")
+valid_opps = buying_group_df["opportunity_name"].dropna().unique().tolist()
+
+if valid_opps:
+    for opp in sorted(valid_opps):
+        st.markdown(f"- {opp}")
+else:
+    st.write("No opportunities with buying group members were found.")
 # Load CRM data from CSV files
 @st.cache_data
 def load_data():
@@ -150,17 +162,7 @@ deals_df["opportunity_id"] = deals_df["opportunity_id"].astype(str).str.strip()
 buying_group_df = roles_df.merge(contacts_df, on="contact_id", how="left")
 buying_group_df = buying_group_df.merge(deals_df, on="opportunity_id", how="left")
 
-# ---------------------
-# Show opportunities with at least one buying group member
-# ---------------------
-opps_with_members = buying_group_df["opportunity_name"].dropna().unique().tolist()
-
-st.markdown("### 📋 Opportunities with Buying Group Members")
-if opps_with_members:
-    for opp in sorted(opps_with_members):
-        st.markdown(f"- {opp}")
-else:
-    st.write("No opportunities with buying group members were found.")
+# --------------------
 # Rename sales activity fields
 sales_activity_df = data["sales_activities"].rename(columns={
     "Contact ID": "contact_id",
