@@ -48,12 +48,14 @@ Try asking high-value questions like:
 The more structured your CRM data is, the more accurate the assistant will be. Let’s go!        
 """)
 # Ask the assistant a question
-st.text_input(
-    "Ask about a buying group (use the deal names mentioned above):",
-    key="user_question_input"
-)
+st.text_input("Ask about a buying group (use the deal names mentioned above):", key="user_question_input")
 user_question = st.session_state.get("user_question_input", "")
 
+# Reset field on rerun after submission
+if st.session_state.get("submitted"):
+    st.session_state.user_question_input = ""
+    st.session_state.submitted = False
+    st.rerun()
 
 st.markdown("""
     <style>
@@ -293,8 +295,8 @@ try:
                 "answer": response_text,
                 "timestamp": timestamp
             })
-
-            st.session_state.user_question_input = ""  # Clear input after submission
+            st.session_state.submitted = True
             st.rerun()
+
 except Exception as e:
             st.error(f"Something went wrong: {e}")      
