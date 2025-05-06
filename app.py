@@ -52,12 +52,48 @@ data = load_data()
 # Ask the assistant a question
 user_question = st.text_input("Ask about a buying group (e.g., 'Who's in the buying group for Acme Corp?'):")
 
+st.markdown("""
+    <style>
+    .chat-bubble-user {
+        background-color: #5C33F6;
+        color: white;
+        padding: 0.75em 1em;
+        border-radius: 15px;
+        margin-bottom: 0.5em;
+        max-width: 80%;
+        align-self: flex-end;
+    }
+    .chat-bubble-ai {
+        background-color: #E5E9F0;
+        color: #3B3F5C;
+        padding: 0.75em 1em;
+        border-radius: 15px;
+        margin-bottom: 1em;
+        max-width: 80%;
+        align-self: flex-start;
+    }
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 st.markdown("### Chat History")
 
 for message in reversed(st.session_state.chat_history):
-    with st.container():
-        st.markdown(f"**You:** {message['question']}")
-        st.markdown(f"**AI:** {message['answer']}")
+    st.markdown(f"""
+    <div class="chat-container">
+        <div class="chat-bubble-user">
+            <strong>You:</strong> {message['question']}<br>
+            <span style="font-size: 0.75em; color: #D1D5DB;">{message['timestamp']}</span>
+        </div>
+        <div class="chat-bubble-ai">
+            <strong>AI:</strong> {message['answer']}<br>
+            <span style="font-size: 0.75em; color: #9CA3AF;">{message['timestamp']}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ---------------------
 # Rename contact fields
@@ -201,30 +237,31 @@ Now, based on the question below and the data above, provide an analysis or answ
 
 {user_question}
 """
-try:
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": "You are a helpful CRM and RevOps assistant."},
-            {"role": "user", "content": prompt}
-        ]
-    )
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": "You are a helpful CRM and RevOps assistant."},
+                    {"role": "user", "content": prompt}
+                ]
+            )
 
-    response_text = response.choices[0].message.content
+            response_text = response.choices[0].message.content
 
-    # Store Q&A in session state
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
+            from datetime import datetime
+            timestamp = datetime.now().strftime("%b %d, %Y %I:%M %p")
 
-    st.session_state.chat_history.append({
-        "question": user_question,
-        "answer": response_text
-    })
+            if "chat_history" not in st.session_state:
+                st.session_state.chat_history = []
 
-    # Show response
-    st.markdown("### 🧠 AI Response")
-    st.write(response_text)
+            st.session_state.chat_history.append({
+                "question": user_question,
+                "answer": response_text,
+                "timestamp": timestamp
+            })
 
-except Exception as e:
-    st.error(f"Something went wrong: {e}")
+            st.markdown("### 🧠 AI Response")
+            st.write(response_text)
 
+        except Exception as e:
+            st.error(f"Something went wrong: {e}")
