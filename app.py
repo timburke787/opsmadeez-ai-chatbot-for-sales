@@ -48,7 +48,10 @@ Try asking high-value questions like:
 The more structured your CRM data is, the more accurate the assistant will be. Let’s go!        
 """)
 # Ask the assistant a question
-user_question = st.text_input("Ask about a buying group (use the deal names mentioned above):")
+st.text_input(
+    "Ask about a buying group (use the deal names mentioned above):",
+    key="user_question_input"
+)
 
 st.markdown("""
     <style>
@@ -234,9 +237,9 @@ else:
 # ---------------------
 # Prompt GPT
 # ---------------------
-if user_question:
-    with st.spinner("Thinking..."):
-        prompt = f"""
+if st.session_state.get("user_question_input"):
+    user_question = st.session_state["user_question_input"]
+prompt = f"""
 You are an AI assistant helping a RevOps team analyze CRM data.
 
 The user is asking a question about the buying group for an opportunity.
@@ -266,7 +269,7 @@ Now, based on the question below and the data above, provide an analysis or answ
 
 {user_question}
 """
-        try:
+try:
             response = client.chat.completions.create(
                 model="gpt-4o",
                 messages=[
