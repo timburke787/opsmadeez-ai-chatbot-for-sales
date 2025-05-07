@@ -49,6 +49,18 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+# Show intro + available deals only after data is loaded
+st.markdown(f"""
+Welcome to the **OpsMadeEZ CRM Buying Group Assistant**, built by Tim Burke.
+
+This AI-powered chatbot helps sellers, marketers, and RevOps teams explore CRM data and make better decisions about active opportunities and their buying groups.
+
+Try asking high-value questions like:
+- “Who is in the buying group for Rogers-Wilson?”
+- “What roles are missing from the buying group for the Rivera-Ho deal?”
+- “Which contact is the most engaged on the Dickerson-Medina deal?”
+
+""")
 # Load CRM data from CSV files
 @st.cache_data
 def load_data():
@@ -66,6 +78,11 @@ def load_data():
     return data
 
 data = load_data()
+
+# Initialize variables before conditional to avoid NameError
+opp_name = ""
+group_records = []
+activity_records = []
 # Ask the assistant a question inside a form
 with st.form("user_input_form"):
     user_question = st.text_input("Ask about a buying group (use the deal names mentioned above):", key="user_question_input")
@@ -73,10 +90,8 @@ with st.form("user_input_form"):
 
 # Only run the assistant if the form was submitted and question exists
 if submitted and user_question:
-    # ---------------------
-# Extract opportunity name
+    # Extract opportunity name
     opp_name = extract_opportunity_name(user_question or "")
-
 # ---------------------
 # Filter records for selected opportunity
 # ---------------------
@@ -197,24 +212,6 @@ deals_df["opportunity_id"] = deals_df["opportunity_id"].astype(str).str.strip()
 buying_group_df = roles_df.merge(contacts_df, on="contact_id", how="left")
 buying_group_df = buying_group_df.merge(deals_df, on="opportunity_id", how="left")
 valid_opps = buying_group_df["opportunity_name"].dropna().unique().tolist()
-# Show intro + available deals only after data is loaded
-st.markdown(f"""
-Welcome to the **OpsMadeEZ CRM Buying Group Assistant**, built by Tim Burke.
-
-This AI-powered chatbot helps sellers, marketers, and RevOps teams explore CRM data and make better decisions about active opportunities and their buying groups.
-
-Try asking high-value questions like:
-- “Who is in the buying group for Rogers-Wilson?”
-- “What roles are missing from the buying group for the Rivera-Ho deal?”
-- “Which contact is the most engaged on the Dickerson-Medina deal?”
-
----
-
-### 📋 Opportunities with Buying Group Members
-
-Use these opportunity names in your questions:
-{', '.join(sorted(valid_opps))}
-""")
 # --------------------
 # Rename sales activity fields
 sales_activity_df = data["sales_activities"].rename(columns={
