@@ -79,6 +79,74 @@ def load_data():
 
 data = load_data()
 
+# ---------------------
+# Rename contact fields
+contacts_df = data["contacts"].rename(columns={
+    "Contact ID": "contact_id",
+    "Full Name": "full_name",
+    "Email": "email",
+    "Title": "title",
+    "Phone": "phone",
+    "Location": "location",
+    "Last Engagement Date": "last_engagement_date",
+    "Engagement Score": "engagement_score",
+    "Account ID": "account_id"
+})
+
+accounts_df = data["accounts"].rename(columns={
+    "Account ID": "account_id",
+    "Company Name": "account_name",
+    "Industry": "industry",
+    "NAICS Code": "sic_naics",
+    "Region": "region",
+    "Domain": "domain",
+    "Employee Count": "employee_count",
+    "Annual Revenue": "annual_revenue",
+    "Industry Name": "industry_name"
+})
+
+# Rename deal fields
+deals_df = data["deals"].rename(columns={
+    "Opportunity ID": "opportunity_id",
+    "Opportunity Name": "opportunity_name",
+    "Stage": "stage",
+    "Type": "type",
+    "Amount": "amount",
+    "Created Date": "created_date",
+    "Expected Close Date": "expected_close_date",
+    "Account ID": "account_id",
+    "Primary Contact ID": "primary_contact_id",
+    "Primary Contact Name": "primary_contact_name",
+    "Primary Contact Title": "primary_contact_title"
+})
+
+# Normalize IDs before join
+roles_df = data["roles"].rename(columns={
+    "Contact ID": "contact_id",
+    "Opportunity ID": "opportunity_id",
+    "Role": "role",
+    "Is Primary": "is_primary"
+})
+# Match opportunity based on account name
+# ---------------------
+def normalize(text):
+    return re.sub(r'[^a-z0-9]', '', str(text).lower())
+
+def extract_opportunity_name(question):
+    norm_question = normalize(question)
+
+    for _, row in accounts_df.iterrows():
+        if normalize(row["account_name"]) in norm_question:
+            acct_id = row["account_id"]
+            matched_opps = deals_df[deals_df["account_id"] == acct_id]
+            if not matched_opps.empty:
+                return matched_opps.iloc[0]["opportunity_name"]
+
+    for opp in deals_df["opportunity_name"]:
+        if normalize(opp) in norm_question:
+            return opp
+
+    return None
 # Initialize variables before conditional to avoid NameError
 opp_name = ""
 group_records = []
@@ -91,7 +159,21 @@ with st.form("user_input_form"):
 # Only run the assistant if the form was submitted and question exists
 if submitted and user_question:
     # Extract opportunity name
-    opp_name = extract_opportunity_name(user_question or "")
+    opp_name = extract_opportunity_name(user_question)
+    
+    # ---------------------
+    # Filter records for selected opportunity
+    # ---------------------
+    if opp_name:
+        selected_group = buying_group_df[buying_group_df["opportunity_name"].str.lower() == opp_name.lower()]
+        contact_ids = selected_group["contact_id"].unique()
+        activity_subset = sales_activity_df[sales_activity_df["contact_id"].isin(contact_ids)]
+        group_records = selected_group.to_dict(orient="records")
+        activity_records = activity_subset.to_dict(orient="records")
+    else:
+        group_records = []
+        activity_records = []
+
 # ---------------------
 # Filter records for selected opportunity
 # ---------------------
@@ -157,54 +239,6 @@ for message in chat_history_reversed:
     </div>
     """, unsafe_allow_html=True)
 
-# ---------------------
-# Rename contact fields
-contacts_df = data["contacts"].rename(columns={
-    "Contact ID": "contact_id",
-    "Full Name": "full_name",
-    "Email": "email",
-    "Title": "title",
-    "Phone": "phone",
-    "Location": "location",
-    "Last Engagement Date": "last_engagement_date",
-    "Engagement Score": "engagement_score",
-    "Account ID": "account_id"
-})
-
-accounts_df = data["accounts"].rename(columns={
-    "Account ID": "account_id",
-    "Company Name": "account_name",
-    "Industry": "industry",
-    "NAICS Code": "sic_naics",
-    "Region": "region",
-    "Domain": "domain",
-    "Employee Count": "employee_count",
-    "Annual Revenue": "annual_revenue",
-    "Industry Name": "industry_name"
-})
-
-# Rename deal fields
-deals_df = data["deals"].rename(columns={
-    "Opportunity ID": "opportunity_id",
-    "Opportunity Name": "opportunity_name",
-    "Stage": "stage",
-    "Type": "type",
-    "Amount": "amount",
-    "Created Date": "created_date",
-    "Expected Close Date": "expected_close_date",
-    "Account ID": "account_id",
-    "Primary Contact ID": "primary_contact_id",
-    "Primary Contact Name": "primary_contact_name",
-    "Primary Contact Title": "primary_contact_title"
-})
-
-# Normalize IDs before join
-roles_df = data["roles"].rename(columns={
-    "Contact ID": "contact_id",
-    "Opportunity ID": "opportunity_id",
-    "Role": "role",
-    "Is Primary": "is_primary"
-})
 roles_df["opportunity_id"] = roles_df["opportunity_id"].astype(str).str.strip()
 deals_df["opportunity_id"] = deals_df["opportunity_id"].astype(str).str.strip()
 
@@ -220,44 +254,6 @@ sales_activity_df = data["sales_activities"].rename(columns={
     "Date": "activity_date",
     "Summary": "summary"
 })
-
-# ---------------------
-# Match opportunity based on account name
-# ---------------------
-def normalize(text):
-    return re.sub(r'[^a-z0-9]', '', str(text).lower())
-
-def extract_opportunity_name(question):
-    norm_question = normalize(question)
-
-    for _, row in accounts_df.iterrows():
-        if normalize(row["account_name"]) in norm_question:
-            acct_id = row["account_id"]
-            matched_opps = deals_df[deals_df["account_id"] == acct_id]
-            if not matched_opps.empty:
-                return matched_opps.iloc[0]["opportunity_name"]
-
-    for opp in deals_df["opportunity_name"]:
-        if normalize(opp) in norm_question:
-            return opp
-
-    return None
-
-# Extract opportunity name
-opp_name = extract_opportunity_name(user_question or "")
-
-# ---------------------
-# Filter records for selected opportunity
-# ---------------------
-if opp_name:
-    selected_group = buying_group_df[buying_group_df["opportunity_name"].str.lower() == opp_name.lower()]
-    contact_ids = selected_group["contact_id"].unique()
-    activity_subset = sales_activity_df[sales_activity_df["contact_id"].isin(contact_ids)]
-    group_records = selected_group.to_dict(orient="records")
-    activity_records = activity_subset.to_dict(orient="records")
-else:
-    group_records = []
-    activity_records = []
 
 # ---------------------
 try:
