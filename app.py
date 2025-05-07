@@ -61,6 +61,8 @@ Try asking high-value questions like:
 - “Who is in the buying group for Rogers-Wilson?”
 - “What roles are missing from the buying group for the Rivera-Ho deal?”
 - “Which contact is the most engaged on the Dickerson-Medina deal?”
+
+Here are a list of accounts you will find buying group data for: Dickerson-Medina, Vasquez PLC, Rivera-Ho, Rogers-Wilson, Green Group, Soto Inc, Pearson Group, Cooper and Sons.
 """)
 
 # Load data
