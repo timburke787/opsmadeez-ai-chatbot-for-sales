@@ -4,19 +4,20 @@ import pandas as pd
 from openai import OpenAI
 from dotenv import load_dotenv
 import re
+from datetime import datetime
 
 # Load environment variables from .env file
 load_dotenv(dotenv_path=".env")
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Set up the page
-
+# Streamlit page setup
 st.set_page_config(page_title="CRM AI Assistant", layout="wide")
-
 st.title("🤖 OpsMadeEZ | AI Buying Group Assistant")
+
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
-# ✅ Inject custom styles for chat bubbles and layout
+
+# Inject custom CSS
 st.markdown("""
     <style>
     .chat-bubble-user {
@@ -49,7 +50,8 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-# Show intro + available deals only after data is loaded
+
+# Welcome message
 st.markdown(f"""
 Welcome to the **OpsMadeEZ CRM Buying Group Assistant**, built by Tim Burke.
 
@@ -59,12 +61,12 @@ Try asking high-value questions like:
 - “Who is in the buying group for Rogers-Wilson?”
 - “What roles are missing from the buying group for the Rivera-Ho deal?”
 - “Which contact is the most engaged on the Dickerson-Medina deal?”
-
 """)
-# Load CRM data from CSV files
+
+# Load data
 @st.cache_data
 def load_data():
-    data = {
+    return {
         "contacts": pd.read_csv("data/contacts.csv"),
         "accounts": pd.read_csv("data/accounts.csv"),
         "deals": pd.read_csv("data/deals.csv"),
@@ -75,12 +77,10 @@ def load_data():
         "roles": pd.read_csv("data/contact_deal_roles.csv"),
         "definitions": pd.read_csv("data/buying_group_definitions.csv")
     }
-    return data
 
 data = load_data()
 
-# ---------------------
-# Rename contact fields
+# Rename fields
 contacts_df = data["contacts"].rename(columns={
     "Contact ID": "contact_id",
     "Full Name": "full_name",
@@ -105,7 +105,6 @@ accounts_df = data["accounts"].rename(columns={
     "Industry Name": "industry_name"
 })
 
-# Rename deal fields
 deals_df = data["deals"].rename(columns={
     "Opportunity ID": "opportunity_id",
     "Opportunity Name": "opportunity_name",
@@ -120,50 +119,58 @@ deals_df = data["deals"].rename(columns={
     "Primary Contact Title": "primary_contact_title"
 })
 
-# Normalize IDs before join
 roles_df = data["roles"].rename(columns={
     "Contact ID": "contact_id",
     "Opportunity ID": "opportunity_id",
     "Role": "role",
     "Is Primary": "is_primary"
 })
-# Match opportunity based on account name
-# ---------------------
+roles_df["opportunity_id"] = roles_df["opportunity_id"].astype(str).str.strip()
+deals_df["opportunity_id"] = deals_df["opportunity_id"].astype(str).str.strip()
+
+# Build buying group view
+buying_group_df = roles_df.merge(contacts_df, on="contact_id", how="left")
+buying_group_df = buying_group_df.merge(deals_df, on="opportunity_id", how="left")
+valid_opps = buying_group_df["opportunity_name"].dropna().unique().tolist()
+
+# Rename sales activities
+sales_activity_df = data["sales_activities"].rename(columns={
+    "Contact ID": "contact_id",
+    "Activity Type": "activity_type",
+    "Date": "activity_date",
+    "Summary": "summary"
+})
+
+# Text normalization + opportunity name matcher
 def normalize(text):
     return re.sub(r'[^a-z0-9]', '', str(text).lower())
 
 def extract_opportunity_name(question):
     norm_question = normalize(question)
-
     for _, row in accounts_df.iterrows():
         if normalize(row["account_name"]) in norm_question:
             acct_id = row["account_id"]
             matched_opps = deals_df[deals_df["account_id"] == acct_id]
             if not matched_opps.empty:
                 return matched_opps.iloc[0]["opportunity_name"]
-
     for opp in deals_df["opportunity_name"]:
         if normalize(opp) in norm_question:
             return opp
-
     return None
-# Initialize variables before conditional to avoid NameError
+
+# Initial state
 opp_name = ""
 group_records = []
 activity_records = []
-# Ask the assistant a question inside a form
+
+# Streamlit form
 with st.form("user_input_form"):
     user_question = st.text_input("Ask about a buying group (use the deal names mentioned above):", key="user_question_input")
     submitted = st.form_submit_button("Submit")
 
-# Only run the assistant if the form was submitted and question exists
+# Handle form submission
 if submitted and user_question:
-    # Extract opportunity name
     opp_name = extract_opportunity_name(user_question)
-    
-    # ---------------------
-    # Filter records for selected opportunity
-    # ---------------------
     if opp_name:
         selected_group = buying_group_df[buying_group_df["opportunity_name"].str.lower() == opp_name.lower()]
         contact_ids = selected_group["contact_id"].unique()
@@ -171,61 +178,69 @@ if submitted and user_question:
         group_records = selected_group.to_dict(orient="records")
         activity_records = activity_subset.to_dict(orient="records")
     else:
+        st.warning("No matching opportunity found. Try using a specific account or deal name.")
         group_records = []
         activity_records = []
 
-# ---------------------
-# Filter records for selected opportunity
-# ---------------------
-if opp_name:
-    selected_group = buying_group_df[buying_group_df["opportunity_name"].str.lower() == opp_name.lower()]
-    contact_ids = selected_group["contact_id"].unique()
-    activity_subset = sales_activity_df[sales_activity_df["contact_id"].isin(contact_ids)]
-    group_records = selected_group.to_dict(orient="records")
-    activity_records = activity_subset.to_dict(orient="records")
-else:
-    group_records = []
-    activity_records = []
+    # Build GPT prompt
+    prompt = f"""
+    You are an AI assistant helping a RevOps team analyze CRM data.
 
-# ---------------------
-# Prompt GPT
-# ---------------------
-prompt = f"""
-You are an AI assistant helping a RevOps team analyze CRM data.
+    The user is asking a question about the buying group for an opportunity.
 
-The user is asking a question about the buying group for an opportunity.
+    The buying group typically includes the following roles:
+    - Decision Maker (e.g. CMO, VP of Marketing)
+    - Champion (someone who drives adoption internally)
+    - End User (daily users of the product)
+    - Finance (budget holder)
+    - Procurement (contract gatekeeper)
 
-The buying group typically includes the following roles:
-- Decision Maker (e.g. CMO, VP of Marketing)
-- Champion (someone who drives adoption internally)
-- End User (daily users of the product)
-- Finance (budget holder)
-- Procurement (contract gatekeeper)
+    Your goals:
+    1. Identify which of those roles are represented in the buying group and which are missing.
+    2. Review the sales activity history to identify:
+       - The most engaged contact (based on activity frequency and recency)
+       - The least engaged contact
+       - Any contacts who haven't been touched recently
+       - Summaries of the last few activities if available
 
-Your goals:
-1. Identify which of those roles are represented in the buying group and which are missing.
-2. Review the sales activity history to identify:
-   - The most engaged contact (based on activity frequency and recency)
-   - The least engaged contact
-   - Any contacts who haven't been touched recently
-   - Summaries of the last few activities if available
+    Here is the buying group for the opportunity '{opp_name}' (if found):
+    {group_records}
 
-Here is the buying group for the opportunity '{opp_name}' (if found):
-{group_records}
+    Here are the sales activities involving those contacts:
+    {activity_records}
 
-Here are the sales activities involving those contacts:
-{activity_records}
+    Now, based on the question below and the data above, provide an analysis or answer:
 
-Now, based on the question below and the data above, provide an analysis or answer:
+    {user_question}
+    """
 
-{user_question}
-"""
+    # Call OpenAI
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": "You are a helpful CRM and RevOps assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
 
-# Render chat history
+        response_text = response.choices[0].message.content
+        timestamp = datetime.now().strftime("%b %d, %Y %I:%M %p")
+
+        st.session_state.chat_history.append({
+            "question": user_question,
+            "answer": response_text,
+            "timestamp": timestamp
+        })
+        st.session_state.submitted = True
+        st.rerun()
+
+    except Exception as e:
+        st.error(f"Something went wrong: {e}")
+
+# Chat history rendering
 st.markdown("### Chat History")
-chat_history_reversed = list(reversed(st.session_state.chat_history))
-
-for message in chat_history_reversed:
+for message in reversed(st.session_state.chat_history):
     st.markdown(f""" 
     <div class="chat-container">
         <div class="chat-bubble-user">
@@ -238,48 +253,3 @@ for message in chat_history_reversed:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-roles_df["opportunity_id"] = roles_df["opportunity_id"].astype(str).str.strip()
-deals_df["opportunity_id"] = deals_df["opportunity_id"].astype(str).str.strip()
-
-# Merge to create full buying group view
-buying_group_df = roles_df.merge(contacts_df, on="contact_id", how="left")
-buying_group_df = buying_group_df.merge(deals_df, on="opportunity_id", how="left")
-valid_opps = buying_group_df["opportunity_name"].dropna().unique().tolist()
-# --------------------
-# Rename sales activity fields
-sales_activity_df = data["sales_activities"].rename(columns={
-    "Contact ID": "contact_id",
-    "Activity Type": "activity_type",
-    "Date": "activity_date",
-    "Summary": "summary"
-})
-
-# ---------------------
-try:
-    response = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": "You are a helpful CRM and RevOps assistant."},
-            {"role": "user", "content": prompt}
-        ]
-    )
-
-    response_text = response.choices[0].message.content
-
-    from datetime import datetime
-    timestamp = datetime.now().strftime("%b %d, %Y %I:%M %p")
-
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
-
-    st.session_state.chat_history.append({
-        "question": user_question,
-        "answer": response_text,
-        "timestamp": timestamp
-    })
-    st.session_state.submitted = True
-    st.rerun()
-
-except Exception as e:
-    st.error(f"Something went wrong: {e}")    
